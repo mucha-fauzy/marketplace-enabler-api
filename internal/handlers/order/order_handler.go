@@ -36,7 +36,7 @@ func (h *OrderHandler) DownloadOrdersByMarket(w http.ResponseWriter, r *http.Req
 
 	err := downloadFilter.Validate()
 	if err != nil {
-		response.WithError(w, failure.BadRequest(err))
+		response.WithError(w, err)
 		return
 	}
 
