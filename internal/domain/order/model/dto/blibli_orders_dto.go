@@ -73,7 +73,7 @@ func convertBlibliBrandResponses(ordersBrandList model.OrdersBrandList) BlibliBr
 }
 
 type BlibliStoreResponse struct {
-	Store null.String `json:"brand"`
+	Store null.String `json:"store"`
 }
 
 func mapBlibliStoreResponses(blibliStore model.BlibliStore) BlibliStoreResponse {
