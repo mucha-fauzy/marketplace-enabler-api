@@ -65,7 +65,7 @@ func (h *OrderHandler) DownloadOrdersByMarket(w http.ResponseWriter, r *http.Req
 // @Router /v1/orders/{market}/brand [get]
 func (h *OrderHandler) GetBrandsByMarket(w http.ResponseWriter, r *http.Request) {
 	marketplace := chi.URLParam(r, shared.MarketPathField)
-	brandFilter := dto.NewBrandOrdersByMarketFilterRequests(marketplace)
+	brandFilter := dto.NewGetBrandsByMarketFilterRequests(marketplace)
 
 	err := brandFilter.Validate()
 	if err != nil {

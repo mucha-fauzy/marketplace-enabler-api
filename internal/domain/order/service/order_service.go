@@ -13,7 +13,7 @@ import (
 
 type OrderExtensionService interface {
 	DownloadOrdersByMarket(downloadCtx context.Context, downloadFilter dto.DownloadOrdersByMarketFilterRequest) (dto.OrdersDownloadResponseList, error)
-	GetBrandsByMarket(brandCtx context.Context, brandFilter dto.BrandOrdersByMarketFilterRequest) (dto.OrdersBrandResponseList, error)
+	GetBrandsByMarket(brandCtx context.Context, brandFilter dto.GetBrandsByMarketFilterRequest) (dto.OrdersBrandResponseList, error)
 	GetStoresByMarket(storeCtx context.Context, storeFilter dto.GetStoresByMarketFilterRequest) (dto.OrdersStoreResponseList, error)
 }
 
@@ -47,7 +47,7 @@ func (s *OrderServiceImpl) DownloadOrdersByMarket(downloadCtx context.Context, d
 	return dto.ConvertDownloadResponses(downloadResults), nil
 }
 
-func (s *OrderServiceImpl) GetBrandsByMarket(brandCtx context.Context, brandFilter dto.BrandOrdersByMarketFilterRequest) (dto.OrdersBrandResponseList, error) {
+func (s *OrderServiceImpl) GetBrandsByMarket(brandCtx context.Context, brandFilter dto.GetBrandsByMarketFilterRequest) (dto.OrdersBrandResponseList, error) {
 	var brandResults model.OrdersBrandList
 	var err error
 
