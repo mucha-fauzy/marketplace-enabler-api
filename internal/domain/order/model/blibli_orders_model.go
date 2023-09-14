@@ -35,6 +35,18 @@ func BlibliNewOrdersBrandList(blibliBrandList BlibliBrandList) OrdersBrandList {
 	}
 }
 
+type BlibliStore struct {
+	Store null.String `db:"store"`
+}
+
+type BlibliStoreList []*BlibliStore
+
+func BlibliNewOrdersStoreList(blibliStoreList BlibliStoreList) OrdersStoreList {
+	return OrdersStoreList{
+		Blibli: blibliStoreList,
+	}
+}
+
 // type BlibliOrders struct {
 // 	ID              int32       `db:"id"`
 // 	Brand           null.String `db:"brand"`
@@ -78,24 +90,5 @@ func BlibliNewOrdersBrandList(blibliBrandList BlibliBrandList) OrdersBrandList {
 // 		b.UpdatedAt,
 // 		b.CreatedBy,
 // 		b.UpdatedBy,
-// 	}
-// }
-
-// func (b BlibliBrands) GetFields() []interface{} {
-// 	return []interface{}{
-// 		b.Label,
-// 		b.Value,
-// 	}
-// }
-
-// type BlibliStores struct {
-// 	Label null.String `db:"store"`
-// 	Value null.String `db:"store"`
-// }
-
-// func (b BlibliStores) GetFields() []interface{} {
-// 	return []interface{}{
-// 		b.Label,
-// 		b.Value,
 // 	}
 // }
