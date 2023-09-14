@@ -95,7 +95,7 @@ func (h *OrderHandler) GetBrandsByMarket(w http.ResponseWriter, r *http.Request)
 // @Success 200 {object} response.Base(data=dto.OrdersStoreResponseList)
 // @Failure 400 {object} response.Base
 // @Failure 500 {object} response.Base
-// @Router /v1/orders/{market}/brand [get]
+// @Router /v1/orders/{market}/store [get]
 func (h *OrderHandler) GetStoresByMarket(w http.ResponseWriter, r *http.Request) {
 	marketplace := chi.URLParam(r, shared.MarketPathField)
 	storeFilter := dto.NewGetStoresByMarketFilterRequests(marketplace)
