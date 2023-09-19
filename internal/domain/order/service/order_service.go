@@ -36,7 +36,7 @@ func (s *OrderServiceImpl) DownloadOrdersByMarket(downloadCtx context.Context, d
 			log.Error().
 				Err(err).
 				Msg("[DownloadOrdersByMarket] Internal server error occurred")
-			err = failure.InternalError(err)
+			err = failure.InternalError(shared.InternalErrorSystem)
 			return dto.OrdersDownloadResponseList{}, err
 		}
 		log.Warn().
