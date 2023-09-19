@@ -65,7 +65,7 @@ func (s *OrderServiceImpl) GetBrandsByMarket(brandCtx context.Context, brandFilt
 			log.Error().
 				Err(err).
 				Msg("[GetBrandsByMarket] Internal server error occurred")
-			err = failure.InternalError(err)
+			err = failure.InternalError(shared.InternalErrorSystem)
 			return dto.OrdersBrandResponseList{}, err
 		}
 		log.Warn().
@@ -92,7 +92,7 @@ func (s *OrderServiceImpl) GetStoresByMarket(storeCtx context.Context, storeFilt
 			log.Error().
 				Err(err).
 				Msg("[GetStoresByMarket] Internal server error occurred")
-			err = failure.InternalError(err)
+			err = failure.InternalError(shared.InternalErrorSystem)
 			return dto.OrdersStoreResponseList{}, err
 		}
 		log.Warn().
