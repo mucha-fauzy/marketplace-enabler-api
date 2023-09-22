@@ -43,12 +43,40 @@ const (
 	FROM
 		blibli_orders
 	`
+	selectBlibliPreview = `
+	SELECT 
+		id,
+		brand,
+		store,
+		order_no,
+		order_status,
+		sku_code,
+		total_quantity,
+		product_price,
+		order_date,
+		name_product,
+		order_item_no,
+		buyer_name,
+		packet_no,
+		awb_no,
+		pickup_point_code,
+		created_at,
+		updated_at,
+		created_by,
+		updated_by
+	FROM 
+		blibli_orders
+	`
+	paginationBlibli = `
+	LIMIT ? OFFSET ?
+	`
 )
 
 type BlibliOrdersRepository interface {
 	DownloadBlibliOrders(downloadCtx context.Context, downloadFilter model.DownloadOrdersByMarketFilter) (model.OrdersDownloadList, error)
 	GetBlibliBrands(brandCtx context.Context) (model.OrdersBrandList, error)
 	GetBlibliStores(storeCtx context.Context) (model.OrdersStoreList, error)
+	PreviewBlibliOrders(previewCtx context.Context, previewFilter model.PreviewOrdersByMarketFilter) (model.OrdersPreviewList, error)
 }
 
 func (r *OrderRepositoryMySQL) DownloadBlibliOrders(downloadCtx context.Context, downloadFilter model.DownloadOrdersByMarketFilter) (model.OrdersDownloadList, error) {
@@ -109,4 +137,25 @@ func (r *OrderRepositoryMySQL) GetBlibliStores(storeCtx context.Context) (model.
 		return model.OrdersStoreList{}, nil
 	}
 	return model.BlibliNewOrdersStoreList(blibliStoreList), nil
+}
+
+func (r *OrderRepositoryMySQL) PreviewBlibliOrders(previewCtx context.Context, previewFilter model.PreviewOrdersByMarketFilter) (model.OrdersPreviewList, error) {
+	query := fmt.Sprintf(selectBlibliPreview)
+
+	var args []interface{}
+	query += paginationBlibli
+	offset := (previewFilter.Page - 1) * previewFilter.Size
+	args = append(args, previewFilter.Size, offset)
+
+	var blibliPreviewList model.BlibliPreviewList
+	err := r.DB.Read.Select(&blibliPreviewList, query, args...)
+	if err != nil {
+		log.Error().
+			Err(err).
+			Msg("[PreviewBlibliOrders] Failed to get preview blibli orders")
+		err = failure.InternalError(err)
+		return model.OrdersPreviewList{}, err
+	}
+
+	return model.BlibliNewOrdersPreviewList(blibliPreviewList), nil
 }
