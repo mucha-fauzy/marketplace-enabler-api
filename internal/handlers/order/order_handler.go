@@ -117,3 +117,40 @@ func (h *OrderHandler) GetStoresByMarket(w http.ResponseWriter, r *http.Request)
 
 	response.WithJSON(w, http.StatusOK, store)
 }
+
+// Preview orders by marketplace with pagination
+// @Summary Preview Orders By Marketplace
+// @Description Get a list of orders field to be previewed
+// @Tags orders
+// @Produce json
+// @Param market path string true "Market"
+// @Param page query int false "Page"
+// @Param size query int flase "Size"
+// @Success 200 {object} response.Base(data=dto.OrdersPreviewResponseList)
+// @Failure 400 {object} response.Base
+// @Failure 500 {object} response.Base
+// @Router /v1/orders/{market} [get]
+func (h *OrderHandler) PreviewOrdersByMarket(w http.ResponseWriter, r *http.Request) {
+	marketplace := chi.URLParam(r, shared.MarketPathField)
+	pageStr := r.URL.Query().Get(shared.PageQueryField)
+	sizeStr := r.URL.Query().Get(shared.SizeQueryField)
+	previewFilter := dto.NewPreviewOrdersByMarketFilterRequests(marketplace, pageStr, sizeStr)
+
+	err := previewFilter.Validate()
+	if err != nil {
+		response.WithError(w, err)
+		return
+	}
+
+	previewCtx := r.Context()
+	preview, err := h.OrderService.PreviewOrdersByMarket(previewCtx, previewFilter)
+	if err != nil {
+		log.Warn().
+			Err(err).
+			Msg("[PreviewOrdersByMarket] Failed to preview orders")
+		response.WithError(w, err)
+		return
+	}
+
+	response.WithJSON(w, http.StatusOK, preview)
+}

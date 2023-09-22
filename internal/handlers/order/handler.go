@@ -18,6 +18,7 @@ func ProvideOrderHandler(orderService service.OrderService) OrderHandler {
 // Router sets up the router for this domain.
 func (h *OrderHandler) Router(r chi.Router) {
 	r.Route("/", func(r chi.Router) {
+		r.Get("/orders/{market}", h.PreviewOrdersByMarket)
 		r.Get("/orders/{market}/download", h.DownloadOrdersByMarket)
 		r.Get("/orders/{market}/brand", h.GetBrandsByMarket)
 		r.Get("/orders/{market}/store", h.GetStoresByMarket)
