@@ -15,6 +15,7 @@ type OrderExtensionService interface {
 	DownloadOrdersByMarket(downloadCtx context.Context, downloadFilter dto.DownloadOrdersByMarketFilterRequest) (dto.OrdersDownloadResponseList, error)
 	GetBrandsByMarket(brandCtx context.Context, brandFilter dto.GetBrandsByMarketFilterRequest) (dto.OrdersBrandResponseList, error)
 	GetStoresByMarket(storeCtx context.Context, storeFilter dto.GetStoresByMarketFilterRequest) (dto.OrdersStoreResponseList, error)
+	PreviewOrdersByMarket(previewCtx context.Context, previewFilter dto.PreviewOrdersByMarketFilterRequest) (dto.OrdersPreviewResponseList, error)
 }
 
 func (s *OrderServiceImpl) DownloadOrdersByMarket(downloadCtx context.Context, downloadFilter dto.DownloadOrdersByMarketFilterRequest) (dto.OrdersDownloadResponseList, error) {
@@ -100,4 +101,32 @@ func (s *OrderServiceImpl) GetStoresByMarket(storeCtx context.Context, storeFilt
 		return dto.OrdersStoreResponseList{}, err
 	}
 	return dto.ConvertStoreResponses(storeResults), nil
+}
+
+func (s *OrderServiceImpl) PreviewOrdersByMarket(previewCtx context.Context, previewFilter dto.PreviewOrdersByMarketFilterRequest) (dto.OrdersPreviewResponseList, error) {
+	var previewResults model.OrdersPreviewList
+	var err error
+
+	previewQueryFilter := dto.ConvertPreviewOrdersByMarketFilterRequests(previewFilter)
+	switch previewFilter.Marketplace {
+	case shared.BLIBLI:
+		previewResults, err = s.OrderRepository.PreviewBlibliOrders(previewCtx, previewQueryFilter)
+	default:
+		return dto.OrdersPreviewResponseList{}, nil
+	}
+
+	if err != nil {
+		if failure.GetCode(err) == http.StatusInternalServerError {
+			log.Error().
+				Err(err).
+				Msg("[PreviewOrdersByMarket] Internal server error occurred")
+			err = failure.InternalError(shared.InternalErrorSystem)
+			return dto.OrdersPreviewResponseList{}, err
+		}
+		log.Warn().
+			Msg("[PreviewOrdersByMarket] Error occurred")
+		return dto.OrdersPreviewResponseList{}, err
+	}
+
+	return dto.ConvertPreviewResponses(previewResults), nil
 }
