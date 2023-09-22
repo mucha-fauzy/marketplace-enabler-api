@@ -2,6 +2,7 @@ package dto
 
 import (
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/evermos/boilerplate-go/internal/domain/order/model"
@@ -90,5 +91,59 @@ func (f *GetStoresByMarketFilterRequest) Validate() error {
 func NewGetStoresByMarketFilterRequests(marketplace string) GetStoresByMarketFilterRequest {
 	return GetStoresByMarketFilterRequest{
 		Marketplace: marketplace,
+	}
+}
+
+type PreviewOrdersByMarketFilterRequest struct {
+	Marketplace string
+	PageStr     string
+	SizeStr     string
+	Page        int
+	Size        int
+}
+
+func (f *PreviewOrdersByMarketFilterRequest) Validate() error {
+	var err error
+	validator := shared.GetValidator()
+
+	if f.PageStr != "" && f.SizeStr != "" {
+		f.Page, err = strconv.Atoi(f.PageStr)
+		if err != nil {
+			return failure.BadRequestFromString(fmt.Sprintf("Invalid page parameter %s", err))
+		}
+
+		if f.Page < shared.PageLowerLimit {
+			f.Page = shared.DefaultPage
+		}
+
+		f.Size, err = strconv.Atoi(f.SizeStr)
+		if err != nil {
+			return failure.BadRequestFromString(fmt.Sprintf("Invalid size parameter %s", err))
+		}
+
+		if f.Size < shared.SizeLowerLimit || f.Size > shared.SizeUpperLimit {
+			f.Size = shared.DefaultSize
+		}
+
+	} else {
+		f.Page = shared.DefaultPage
+		f.Size = shared.DefaultSize
+	}
+
+	return validator.Struct(f)
+}
+
+func NewPreviewOrdersByMarketFilterRequests(marketplace, pageStr, sizeStr string) PreviewOrdersByMarketFilterRequest {
+	return PreviewOrdersByMarketFilterRequest{
+		Marketplace: marketplace,
+		PageStr:     pageStr,
+		SizeStr:     sizeStr,
+	}
+}
+
+func ConvertPreviewOrdersByMarketFilterRequests(previewOrdersByMarketFilterRequest PreviewOrdersByMarketFilterRequest) model.PreviewOrdersByMarketFilter {
+	return model.PreviewOrdersByMarketFilter{
+		Page: previewOrdersByMarketFilterRequest.Page,
+		Size: previewOrdersByMarketFilterRequest.Size,
 	}
 }

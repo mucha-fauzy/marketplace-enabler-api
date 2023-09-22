@@ -37,3 +37,13 @@ func ConvertStoreResponses(ordersStoreList model.OrdersStoreList) OrdersStoreRes
 		Blibli: convertBlibliStoreResponses(ordersStoreList),
 	}
 }
+
+type OrdersPreviewResponseList struct {
+	Blibli BlibliPreviewResponseList `json:"blibli"`
+}
+
+func ConvertPreviewResponses(ordersPreviewList model.OrdersPreviewList) OrdersPreviewResponseList {
+	return OrdersPreviewResponseList{
+		Blibli: convertBlibliPreviewResponses(ordersPreviewList),
+	}
+}

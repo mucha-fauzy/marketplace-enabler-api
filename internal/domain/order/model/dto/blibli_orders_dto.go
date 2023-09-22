@@ -95,3 +95,63 @@ func convertBlibliStoreResponses(ordersStoreList model.OrdersStoreList) BlibliSt
 	}
 	return blibliStoreResponseList
 }
+
+type BlibliPreviewResponse struct {
+	ID              int         `json:"id"`
+	Brand           null.String `json:"brand"`
+	Store           null.String `json:"store"`
+	OrderNo         null.String `json:"orderNo"`
+	OrderStatus     null.String `json:"orderStatus"`
+	SKUCode         null.String `json:"skuCode"`
+	TotalQuantity   null.Int    `json:"totalQuantity"`
+	ProductPrice    null.Int    `json:"productPrice"`
+	OrderDate       null.Time   `json:"orderDate"`
+	NameProduct     null.String `json:"nameProduct"`
+	OrderItemNo     null.String `json:"orderItemNo"`
+	BuyerName       null.String `json:"buyerName"`
+	PacketNo        null.String `json:"packetNo"`
+	AWBNo           null.String `json:"awbNo"`
+	PickupPointCode null.String `json:"pickupPointCode"`
+	CreatedAt       null.Time   `json:"createdAt"`
+	UpdatedAt       null.Time   `json:"updatedAt"`
+	CreatedBy       null.String `json:"createdBy"`
+	UpdatedBy       null.String `json:"updatedBy"`
+}
+
+func mapBlibliPreviewResponses(blibliPreview model.BlibliPreview) BlibliPreviewResponse {
+	return BlibliPreviewResponse{
+		ID:              blibliPreview.ID,
+		Brand:           blibliPreview.Brand,
+		Store:           blibliPreview.Store,
+		OrderNo:         blibliPreview.OrderNo,
+		OrderStatus:     blibliPreview.OrderStatus,
+		SKUCode:         blibliPreview.SKUCode,
+		TotalQuantity:   blibliPreview.TotalQuantity,
+		ProductPrice:    blibliPreview.ProductPrice,
+		OrderDate:       blibliPreview.OrderDate,
+		NameProduct:     blibliPreview.NameProduct,
+		OrderItemNo:     blibliPreview.OrderItemNo,
+		BuyerName:       blibliPreview.BuyerName,
+		PacketNo:        blibliPreview.PacketNo,
+		AWBNo:           blibliPreview.AWBNo,
+		PickupPointCode: blibliPreview.PickupPointCode,
+		CreatedAt:       blibliPreview.CreatedAt,
+		UpdatedAt:       blibliPreview.UpdatedAt,
+		CreatedBy:       blibliPreview.CreatedBy,
+		UpdatedBy:       blibliPreview.UpdatedBy,
+	}
+}
+
+type BlibliPreviewResponseList []*BlibliPreviewResponse
+
+func convertBlibliPreviewResponses(ordersPreviewList model.OrdersPreviewList) BlibliPreviewResponseList {
+	var blibliPreviewResponseList BlibliPreviewResponseList = BlibliPreviewResponseList{}
+
+	if len(ordersPreviewList.Blibli) > 0 {
+		for _, blibliPreview := range ordersPreviewList.Blibli {
+			blibliPreviewResponse := mapBlibliPreviewResponses(*blibliPreview)
+			blibliPreviewResponseList = append(blibliPreviewResponseList, &blibliPreviewResponse)
+		}
+	}
+	return blibliPreviewResponseList
+}
