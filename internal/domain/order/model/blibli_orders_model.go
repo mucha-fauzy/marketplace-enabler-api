@@ -47,48 +47,32 @@ func BlibliNewOrdersStoreList(blibliStoreList BlibliStoreList) OrdersStoreList {
 	}
 }
 
-// type BlibliOrders struct {
-// 	ID              int32       `db:"id"`
-// 	Brand           null.String `db:"brand"`
-// 	Store           null.String `db:"store"`
-// 	OrderNo         null.String `db:"order_no"`
-// 	OrderStatus     null.String `db:"order_status"`
-// 	SKUCode         null.String `db:"sku_code"`
-// 	TotalQuantity   null.Int    `db:"total_quantity"`
-// 	ProductPrice    null.Int    `db:"product_price"`
-// 	OrderDate       null.Time   `db:"order_date"`
-// 	NameProduct     null.String `db:"name_product"`
-// 	OrderItemNo     null.String `db:"order_item_no"`
-// 	BuyerName       null.String `db:"buyer_name"`
-// 	PacketNo        null.String `db:"packet_no"`
-// 	AWBNo           null.String `db:"awb_no"`
-// 	PickupPointCode null.String `db:"pickup_point_code"`
-// 	CreatedAt       null.Time   `db:"created_at"`
-// 	UpdatedAt       null.Time   `db:"updated_at"`
-// 	CreatedBy       null.String `db:"created_by"`
-// 	UpdatedBy       null.String `db:"updated_by"`
-// }
+type BlibliPreview struct {
+	ID              int         `db:"id"`
+	Brand           null.String `db:"brand"`
+	Store           null.String `db:"store"`
+	OrderNo         null.String `db:"order_no"`
+	OrderStatus     null.String `db:"order_status"`
+	SKUCode         null.String `db:"sku_code"`
+	TotalQuantity   null.Int    `db:"total_quantity"`
+	ProductPrice    null.Int    `db:"product_price"`
+	OrderDate       null.Time   `db:"order_date"`
+	NameProduct     null.String `db:"name_product"`
+	OrderItemNo     null.String `db:"order_item_no"`
+	BuyerName       null.String `db:"buyer_name"`
+	PacketNo        null.String `db:"packet_no"`
+	AWBNo           null.String `db:"awb_no"`
+	PickupPointCode null.String `db:"pickup_point_code"`
+	CreatedAt       null.Time   `db:"created_at"`
+	UpdatedAt       null.Time   `db:"updated_at"`
+	CreatedBy       null.String `db:"created_by"`
+	UpdatedBy       null.String `db:"updated_by"`
+}
 
-// func (b BlibliOrders) GetFields() []interface{} {
-// 	return []interface{}{
-// 		b.ID,
-// 		b.Brand,
-// 		b.Store,
-// 		b.OrderNo,
-// 		b.OrderStatus,
-// 		b.SKUCode,
-// 		b.TotalQuantity,
-// 		b.ProductPrice,
-// 		b.OrderDate,
-// 		b.NameProduct,
-// 		b.OrderItemNo,
-// 		b.BuyerName,
-// 		b.PacketNo,
-// 		b.AWBNo,
-// 		b.PickupPointCode,
-// 		b.CreatedAt,
-// 		b.UpdatedAt,
-// 		b.CreatedBy,
-// 		b.UpdatedBy,
-// 	}
-// }
+type BlibliPreviewList []*BlibliPreview
+
+func BlibliNewOrdersPreviewList(blibliPreviewList BlibliPreviewList) OrdersPreviewList {
+	return OrdersPreviewList{
+		Blibli: blibliPreviewList,
+	}
+}

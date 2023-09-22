@@ -13,3 +13,7 @@ type OrdersBrandList struct {
 type OrdersStoreList struct {
 	Blibli BlibliStoreList
 }
+
+type OrdersPreviewList struct {
+	Blibli BlibliPreviewList
+}

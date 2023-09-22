@@ -8,3 +8,8 @@ type DownloadOrdersByMarketFilter struct {
 	DateFrom time.Time
 	DateTo   time.Time
 }
+
+type PreviewOrdersByMarketFilter struct {
+	Page int
+	Size int
+}
